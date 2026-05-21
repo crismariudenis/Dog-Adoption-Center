@@ -1,59 +1,32 @@
 \section{The Landscape of Pet Abandonment}
 
-Pet abandonment remains a global crisis with profound ethical, social, and economic implications. Every year, millions of domestic animals, particularly dogs, end up in shelters or on the streets. According to global animal welfare organizations, the reasons for abandonment range from socio-economic factors to a lack of understanding of the responsibilities associated with pet ownership. In many cases, behavioral issues, life transitions (such as moving or the birth of a child), and financial constraints drive owners to surrender their companions.
+Pet abandonment remains a global crisis with profound ethical, social, and economic implications. Every year, millions of domestic animals, particularly dogs, end up in shelters or on the streets. In more developed nations, the burden falls primarily on the shelter infrastructure, whereas in developing regions, it poses a significant public health risk due to rabies and other zoonotic diseases \cite{who_rabies}.
 
-The impact on the animals is devastating. Dogs, being highly social and intelligent creatures, experience intense stress and anxiety when displaced from a familiar environment. Shelters, while providing a safe haven, are often overcrowded and under-resourced, leading to a "warehousing" effect where animals may spend months or even years in confined spaces with limited human interaction.
+According to global animal welfare organizations, the reasons for abandonment range from socio-economic factors to a lack of understanding of the responsibilities associated with pet ownership. In many cases, behavioral issues, life transitions, and financial constraints drive owners to surrender their companions.
 
 \section{The Global Crisis of Pet Overpopulation}
 
-Pet abandonment is a subset of the larger issue of pet overpopulation. According to organizations like the World Health Organization and various international animal welfare groups, there are estimated to be over 200 million stray dogs worldwide. In many developing nations, this poses a significant public health risk (e.g., rabies transmission), while in more developed nations, the burden falls primarily on the shelter infrastructure.
-
-Statistics indicate that in the United States alone, approximately 6.3 million companion animals enter shelters every year. Of these, roughly 3.1 million are dogs. While adoption rates have been steadily increasing due to public awareness campaigns, approximately 390,000 shelter dogs are still euthanized annually. This is often not due to behavioral or health issues, but simply due to a lack of space and the administrative inability to find homes for them before new intakes arrive.
+Pet abandonment is a subset of the larger issue of pet overpopulation. Statistics indicate that in the United States alone, approximately 6.3 million companion animals enter shelters every year \cite{aspca_stats}. Of these, roughly 3.1 million are dogs. While adoption rates have been increasing, approximately 390,000 shelter dogs are still euthanized annually \cite{aspca_stats}. This is often not due to health issues, but due to a lack of space and administrative inability to process adoptions fast enough.
 
 \section{The Economic Cost of Abandonment}
 
-The economic impact of pet abandonment is often overlooked. Municipalities spend billions of dollars collectively on animal control, shelter operations, and public health measures related to strays. A single "intake to adoption" cycle for a dog can cost a shelter anywhere from \$300 to \$800, covering food, medical care, spaying/neutering, and marketing.
-
-For many shelters, the "cost per day" of housing an animal is the most critical metric. When administrative inefficiencies (like the ones this project aims to solve) delay an adoption by even 5 days, the cumulative cost across hundreds of animals can be the difference between a shelter staying solvent or being forced to reduce services.
+The economic impact is often overlooked. Municipalities spend billions of dollars on animal control and shelter operations. A single "intake to adoption" cycle for a dog can cost anywhere from \$300 to \$800, covering food, medical care, and marketing. When administrative inefficiencies delay an adoption by even a few days, the cumulative cost across hundreds of animals can be substantial.
 
 \section{The Psychological Dimension: Shelter Stress}
 
-Modern veterinary science has extensively documented "shelter stress." Dogs in a shelter environment often exhibit repetitive behaviors, chronic anxiety, and suppressed immune systems. This creates a "vicious cycle": a stressed dog is less likely to show well to a potential adopter, which leads to a longer stay in the shelter, which in turn increases the stress and worsens the behavior.
+Modern veterinary science has documented "shelter stress." Dogs in a shelter environment often exhibit chronic anxiety and suppressed immune systems \cite{shelter_stress_2022}. A digital system that fast-tracks the application and matching process directly contributes to the mental well-being of the animals by reducing their "length of stay" (LOS).
 
-A digital system that fast-tracks the application and matching process directly contributes to the physical and mental well-being of the animals by reducing their "length of stay" (LOS). Optimizing LOS is the gold standard for modern shelter management, and it is a primary goal of the Dog Adoption Management System.
+\section{Data Silos and Information Asymmetry}
+One of the most persistent bottlenecks identified in current shelter operations is "Information Asymmetry." Information known to the intake officer (e.g., a dog's fear of thunderstorms) often doesn't reach the marketing volunteer or the final adopter until after a placement failure occurs.
+
+By implementing a document-based NoSQL storage for pet profiles, our system allows for the storage of unstructured, rich metadata that can be updated by different departments simultaneously. This breaks the "linear" flow of information and creates a collaborative data environment.
 
 \section{The Administrative Crisis in Shelters}
 
-Most animal shelters operate as non-profit organizations or municipal departments with very tight budgets. The administrative burden is immense. Staff and volunteers must manage:
-\begin{itemize}
-    \item \textbf{Intake and Medical Records:} Documenting each animal's history, health status, vaccinations, and behavioral assessments.
-    \item \textbf{Application Management:} Processing hundreds of adoption applications, conducting background checks, and scheduling interviews.
-    \item \textbf{Inventory Tracking:} Keeping an up-to-date record of available pets, pending adoptions, and successful placements.
-    \item \textbf{Public Outreach:} Marketing animals through various channels to find potential adopters.
-\end{itemize}
+Most animal shelters operate on very tight budgets. Staff and volunteers must manage complex intake records, medical histories, and hundreds of adoption applications. The reliance on manual or fragmented systems leads to massive inefficiencies. For example, a dog might be listed as "Available" long after an application has been approved, leading to frustration for potential adopters and redundant work for staff.
 
-The reliance on manual or fragmented systems leads to inefficiencies. For example, a dog might be listed as "Available" on a website long after an application has been approved, leading to frustration for potential adopters and redundant work for staff. Data silos also prevent effective communication between different departments or branches of a shelter network.
+\section{The Critical Role of Documentation in Responsible Adoption}
+A major challenge identified during our research is the balance between a "seamless" digital experience and the need for due diligence. While rapid adoption can reduce shelter load, a "convoluted" or rather \textit{rigorous} documentation process is often necessary to ensure the long-term safety of the animal. This involves the verification of housing agreements, identification, and previous pet history. Future iterations of this project will integrate an automated document verification microservice to handle these complex legal requirements without increasing the manual workload of shelter staff.
 
-\section{The Adopter's Journey: Friction and Barriers}
-
-From the perspective of a potential adopter, the process can be equally daunting. A typical journey involves:
-\begin{enumerate}
-    \item \textbf{Search:} Browsing multiple websites and social media pages to find a compatible dog.
-    \item \textbf{Inquiry:} Reaching out to shelters, often receiving delayed or no responses due to staff shortages.
-    \item \textbf{Application:} Filling out lengthy, often paper-based forms that ask repetitive questions.
-    \item \textbf{Waiting:} Waiting for weeks without knowing the status of their application.
-\end{enumerate}
-
-High friction in the adoption process often drives well-meaning individuals toward pet stores or unregulated breeders, inadvertently supporting unethical breeding practices (such as puppy mills). A streamlined, transparent digital process is essential to make adoption the first and easiest choice for anyone looking for a companion.
-
-\section{Opportunities for Technological Intervention}
-
-The challenges identified above present a significant opportunity for a modern, integrated platform. By digitizing and automating key parts of the workflow, we can achieve:
-\begin{itemize}
-    \item \textbf{Real-time Data Synchronization:} Ensuring that pet availability is accurate across all platforms.
-    \item \textbf{Automated Workflow Tracking:} Moving applications through stages (Submitted, Review, Interview, Approved) with automatic notifications to the applicant.
-    \item \textbf{Scalable Communication:} Using event-driven systems to trigger emails or SMS updates, reducing the manual workload on staff.
-    \item \textbf{Data-Driven Insights:} Collecting analytics on adoption trends to help shelters allocate resources more effectively.
-\end{itemize}
-
-This case study demonstrates that the problem is not a lack of interest in adoption, but rather a structural inefficiency in the systems that facilitate it. The Dog Adoption Management System is designed to bridge this gap, transforming a fragmented manual process into a cohesive, automated, and human-centric experience.
+\section{Detailed Analysis of Current Workflows}
+In a typical non-digitized shelter, an adoption application involves a multi-step paper trail. The applicant fills out a form, which is then manually reviewed by a volunteer. This review often requires checking a physical folder for the dog's latest medical status. If the volunteer is part-time, the folder might not be accessed for 48 hours. By the time the review is complete, the dog's status may have changed. Our project aims to replace this asynchronous, error-prone workflow with a real-time, event-driven architecture that ensures all stakeholders have access to the same, current data at all times.
