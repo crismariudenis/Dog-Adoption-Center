@@ -1,7 +1,39 @@
+# Environment and Secrets
 .env
-PetManagementApi/MIL_NOTES.md
-# .NET build artifacts
+.env.*
+*.pfx
+*.certificate
+*.json.user
+
+# IDEs and Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+.vs/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Build artifacts and temporary files
 **/bin/
 **/obj/
-# Node
+**/publish/
+**/dist/
+**/build/
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Project specific
+PetManagementApi/MIL_NOTES.md
+AdoptionManager/AdoptionManager.sln.DotSettings.user
+UserManagementApi/UserManagementApi.sln.DotSettings.user
+
+# Local configuration
+appsettings.Local.json
+appsettings.local.json
