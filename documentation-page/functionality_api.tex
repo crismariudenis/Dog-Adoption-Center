@@ -1,0 +1,40 @@
+The platform's functionality is exposed through a set of RESTful APIs, enabling seamless integration between the frontend and the microservices.
+
+\subsection*{Core Application Flow}
+\begin{enumerate}
+    \item A prospective adopter visits the site and calls the \textit{PetManagementApi} to retrieve a list of available dogs.
+    \item The user registers/logs in via the \textit{UserManagementApi}, receiving an authentication token.
+    \item The user initiates the 3-click adoption process. The frontend submits a request to the \textit{AdoptionManager}.
+    \item The \textit{AdoptionManager} persists the application in Cosmos DB and publishes an \texttt{AdoptionRequested} event to the Azure Service Bus.
+    \item The \textit{NotificationService} consumes the event and sends a confirmation email to the user and an alert to the shelter.
+    \item Once the shelter processes the request, the status is updated, triggering another event that notifies the user of the final decision.
+\end{enumerate}
+
+\subsection*{Key API Endpoints}
+\begin{itemize}
+    \item \textbf{UserManagementApi}
+    \begin{itemize}
+        \item \texttt{POST /api/users/register}: Registers a new user.
+        \item \texttt{POST /api/users/login}: Authenticates a user and returns a JWT.
+    \end{itemize}
+    
+    \item \textbf{PetManagementApi}
+    \begin{itemize}
+        \item \texttt{GET /api/pets}: Retrieves a paginated list of pets with optional search parameters.
+        \item \texttt{GET /api/pets/\{id\}}: Retrieves detailed information and image URLs for a specific pet.
+        \item \texttt{POST /api/pets}: (Admin only) Adds a new pet listing and uploads images to Azure Blob Storage.
+    \end{itemize}
+    
+    \item \textbf{AdoptionManager}
+    \begin{itemize}
+        \item \texttt{POST /api/adoptions}: Submits a new adoption application.
+        \item \texttt{GET /api/adoptions/user/\{userId\}}: Retrieves all applications for a specific user.
+        \item \texttt{PUT /api/adoptions/\{id\}/status}: (Admin only) Updates the status of an application (e.g., Approved, Rejected).
+    \end{itemize}
+    
+    \item \textbf{ReviewService}
+    \begin{itemize}
+        \item \texttt{POST /api/reviews}: Submits a review for a completed adoption.
+        \item \texttt{GET /api/reviews/shelter/\{id\}}: Retrieves all reviews for a specific shelter.
+    \end{itemize}
+\end{itemize}

@@ -1,0 +1,19 @@
+The platform caters primarily to two types of actors: the \textbf{Adopter} (standard user) and the \textbf{Shelter Admin}. The Use Case model illustrates the boundaries of the system and the main interactions.
+
+\begin{itemize}
+    \item \textbf{Adopter Use Cases}:
+    \begin{itemize}
+        \item \textit{Register/Login}: Create an account or authenticate into the platform.
+        \item \textit{Browse and Search Pets}: View the catalog of available dogs and use filters (breed, age, size) to find a match.
+        \item \textit{Submit Adoption Application}: The hallmark 3-click adoption workflow allowing users to express interest and apply for a specific dog quickly.
+        \item \textit{Track Application Status}: View real-time updates on pending adoptions.
+        \item \textit{Leave a Review}: Provide feedback and ratings for the shelter post-adoption.
+    \end{itemize}
+    
+    \item \textbf{Shelter Admin Use Cases}:
+    \begin{itemize}
+        \item \textit{Manage Pet Listings}: Add new dogs to the platform, upload images (stored in Azure Blob), edit details, or remove adopted pets.
+        \item \textit{Process Applications}: Review incoming adoption requests from the \textit{AdoptionManager} and approve or reject them.
+        \item \textit{View Analytics}: Access dashboards powered by the \textit{AnalyticsService} to understand adoption rates and platform engagement.
+    \end{itemize}
+\end{itemize}

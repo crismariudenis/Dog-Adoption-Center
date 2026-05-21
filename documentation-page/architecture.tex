@@ -1,0 +1,17 @@
+The Dog Adoption Center is built using a modern, scalable microservices architecture deployed on Microsoft Azure. This approach ensures high availability, independent scaling of components, and fault isolation.
+
+\begin{itemize}
+    \item \textbf{Frontend and Ingress}: The user interface is a web application accessible via the browser. Traffic routing and load balancing are handled by an Azure Kubernetes Service (AKS) Ingress Controller. Static assets and content delivery are accelerated using Azure CDN.
+    
+    \item \textbf{Microservices}: The backend logic is decoupled into several specialized APIs:
+    \begin{itemize}
+        \item \textit{UserManagementApi}: Manages user registration, authentication, and profiles. Uses Azure SQL for relational data persistence.
+        \item \textit{PetManagementApi}: Handles the cataloging, searching, and filtering of pet listings. Relies on Azure SQL for structured data and Azure Blob Storage for storing pet images.
+        \item \textit{AdoptionManager}: Orchestrates the core 3-click adoption workflow. Given the document-centric nature of adoption applications, this service utilizes Azure Cosmos DB for flexible, highly available storage.
+        \item \textit{ReviewService}: Manages the submission and retrieval of user reviews. 
+        \item \textit{NotificationService}: An asynchronous worker service that listens to events via Azure Service Bus to dispatch emails and alerts to users.
+        \item \textit{AnalyticsService}: Integrates with Azure Application Insights to monitor system health, gather usage telemetry, and provide analytics on adoption trends.
+    \end{itemize}
+    
+    \item \textbf{Infrastructure \& DevOps}: The entire ecosystem is containerized using Docker and orchestrated via Kubernetes (AKS). Communication between services is primarily RESTful over HTTP/HTTPS, with asynchronous event-driven communication handled by Azure Service Bus to decouple the Notification and Analytics services from the critical path.
+\end{itemize}
