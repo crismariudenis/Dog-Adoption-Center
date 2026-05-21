@@ -1,68 +1,34 @@
-The Dog Adoption Management System is built using a modern, cloud-native stack designed for high availability, scalability, and maintainability. The selection of these technologies was driven by the need to handle complex business logic, varying traffic loads, and the requirement for a professional, responsive user experience.
+The Dog Adoption Management System is built using a modern, cloud-native stack designed for high availability and scalability. The selection of these technologies was driven by the need to handle complex business logic while maintaining a professional user experience.
 
-\section{Architectural Paradigm: Microservices and Clean Architecture}
+\section{Microservices and Clean Architecture}
+The project adopts a \textbf{Microservices Architecture}, which allows each functional area to be developed and scaled independently \cite{microservices_fowler}. Within each service, we implement \textbf{Clean Architecture} \cite{clean_architecture}. This ensures that the core business logic is decoupled from external technical concerns like databases or web frameworks.
 
-The project adopts a \textbf{Microservices Architecture}, which allows each functional area (User Management, Pet Management, Adoption Tracking, etc.) to be developed, deployed, and scaled independently. This approach prevents the "monolithic bottleneck" where a failure in one module can crash the entire system.
+\section{Backend: .NET 10}
+The backend is built using \textbf{.NET 10} \cite{microsoft_net10}. .NET was chosen for its high performance, robust NuGet ecosystem, and first-class support for Azure integrations. We use \textbf{Entity Framework Core} for ORM and \textbf{MediatR} to implement the CQRS pattern.
 
-Within each microservice, we implement \textbf{Clean Architecture} (also known as Onion Architecture). This paradigm organizes code into concentric layers:
+\section{Frontend: React}
+The UI is a Single Page Application (SPA) built with \textbf{React} and \textbf{Vite}. We use \textbf{Tailwind CSS} for a utility-first approach to styling, ensuring the platform is responsive and consistent.
+
+\section{Polyglot Persistence}
+We utilize a polyglot persistence strategy:
 \begin{itemize}
-    \item \textbf{Domain Layer:} Contains the core business entities and logic, completely independent of any external frameworks.
-    \item \textbf{Application Layer:} Implements use cases and coordinates the flow of data using the CQRS (Command Query Responsibility Segregation) pattern with the \textbf{MediatR} library.
-    \item \textbf{Infrastructure Layer:} Handles technical concerns such as database persistence and external API integrations.
-    \item \textbf{API/Presentation Layer:} Exposes the functionality through RESTful endpoints.
+    \item \textbf{PostgreSQL:} For structured, relational data like user profiles and reviews.
+    \item \textbf{Azure CosmosDB:} For highly scalable, document-based adoption applications \cite{cosmosdb_whitepaper}.
 \end{itemize}
-\textit{Motivation:} Clean Architecture ensures that the core business rules are easy to test and resistant to changes in external technologies (like switching databases or frameworks).
 
-\section{Backend Development: .NET 10 (Web API)}
+\section{Orchestration: Docker and AKS}
+All components are containerized using \textbf{Docker}. The system is orchestrated by \textbf{Azure Kubernetes Service (AKS)}, which provides self-healing, auto-scaling, and a managed control plane for the microservices.
 
-The backend services are built using \textbf{.NET 10}, the latest long-term support release from Microsoft. .NET was chosen for its high performance, cross-platform capabilities, and robust ecosystem for building enterprise-grade APIs.
+\section{DevOps and CI/CD}
+We use \textbf{GitHub Actions} for automated CI/CD. The pipeline is secured using \textbf{OIDC (OpenID Connect)} for password-less authentication between GitHub and Azure. On every push to the main branch, all 8 container images are built, pushed to the \textbf{Azure Container Registry}, and deployed to the cluster.
 
-Key features used include:
+\section{Future Technology Stack: AI and Mobile}
+To realize our vision for a breed-scanning mobile feature, we plan to incorporate:
 \begin{itemize}
-    \item \textbf{Minimal APIs:} For lightweight, high-performance routing.
-    \item \textbf{Entity Framework Core:} For Object-Relational Mapping (ORM) with PostgreSQL.
-    \item \textbf{Dependency Injection:} Built-in support for managing service lifetimes and promoting loose coupling.
+    \item \textbf{Computer Vision (TensorFlow/PyTorch):} For implementing Convolutional Neural Networks (CNNs) that can classify dog breeds from mobile camera streams.
+    \item \textbf{Mobile Development (React Native / Flutter):} To extend our web-based ecosystem into a cross-platform mobile application.
+    \item \textbf{Identity and Document Verification (Azure AI Vision):} To automate the "convoluted" document verification process, ensuring that submitted IDs and housing permits are authentic and valid.
 \end{itemize}
-\textit{Motivation:} .NET 10 provides industry-leading throughput and a massive library of NuGet packages that accelerate the development of complex features like JWT authentication and CosmosDB integration.
 
-\section{Frontend Development: React and Tailwind CSS}
-
-The user interface is a Single Page Application (SPA) built with \textbf{React}, the most popular library for building reactive web components.
-
-\begin{itemize}
-    \item \textbf{Vite:} Used as the build tool for extremely fast development cycles and optimized production bundles.
-    \item \textbf{Tailwind CSS:} A utility-first CSS framework that allows for rapid styling and a consistent "amber-themed" design language across the entire platform.
-    \item \textbf{React Context API:} Used for global state management, such as authentication status and user profiles.
-\end{itemize}
-\textit{Motivation:} React's component-based model allows us to reuse UI elements (like the dog adoption cards and application modals), while Tailwind ensures the application is fully responsive for mobile users.
-
-\section{Data Persistence Strategy}
-
-We utilize a polyglot persistence strategy, choosing the best database for each specific use case:
-
-\subsection{Relational: PostgreSQL}
-Used for services with highly structured data and complex relationships, such as User Management and Review Services. PostgreSQL provides strong ACID compliance and advanced querying capabilities.
-
-\subsection{NoSQL: Azure CosmosDB}
-Used for the Adoption Manager service. Since adoption applications can vary in structure and require high-speed, globally distributed access, a document-based store is ideal.
-\textit{Motivation:} Polyglot persistence prevents the system from being forced into a "one size fits all" database model, optimizing both performance and developer productivity.
-
-\section{Cloud-Native Infrastructure and DevOps}
-
-The deployment and orchestration of the system are entirely automated:
-
-\begin{itemize}
-    \item \textbf{Docker:} All services are containerized to ensure "build once, run anywhere" consistency between local development and production.
-    \item \textbf{Azure Kubernetes Service (AKS):} Orchestrates the containers, handling auto-scaling, self-healing, and internal load balancing.
-    \item \textbf{Nginx Ingress Controller:} Acts as the unified gateway, routing traffic from the public IP to the appropriate microservices based on URL paths.
-    \item \textbf{GitHub Actions (CI/CD):} Automates the build and deployment process. We use \textbf{OpenID Connect (OIDC)} for secure, password-less authentication between GitHub and Azure.
-\end{itemize}
-\textit{Motivation:} This "Infra-as-Code" approach reduces human error and allows the project to be updated multiple times a day with zero downtime.
-
-\section{Observability and Security}
-
-\begin{itemize}
-    \item \textbf{Azure Application Insights:} Provides real-time telemetry, allowing us to track "Pet Views" vs. "Applications Submitted" and monitor for system errors.
-    \item \textbf{JWT (JSON Web Tokens):} Ensures that all API calls are securely authenticated and that user data is protected.
-\end{itemize}
-\textit{Motivation:} High-quality telemetry is essential for understanding user behavior, while standard-compliant security is non-negotiable for a platform handling personal data.
+\section{Monitoring and Observability}
+\textbf{Azure Application Insights} is integrated into the core services to provide real-time telemetry. This allows the team to monitor "Success Rates" of applications and identify performance bottlenecks in the distributed system.

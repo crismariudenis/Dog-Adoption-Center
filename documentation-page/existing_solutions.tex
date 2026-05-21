@@ -5,51 +5,42 @@ To understand the value proposition of the Dog Adoption Management System, it is
 These are specialized applications designed specifically for shelters. Examples include "ShelterBuddy" and "PetPoint".
 
 \subsection{Architecture and Technology}
-Historically, these systems were built as monolithic desktop applications or early web-based platforms. Many still rely on on-premise servers or outdated cloud models. Their architectures often suffer from:
+Historically, these systems were built as monolithic applications. Many still rely on early cloud models that lack true elasticity. Their architectures often suffer from:
 \begin{itemize}
-    \item \textbf{High Coupling:} A change in the billing module can impact the pet medical records module. This architectural debt makes it nearly impossible to implement rapid feature updates or pivot to new technologies like mobile-first reactive interfaces.
-    \item \textbf{Data Inaccessibility:} Many legacy providers charge additional fees for "Data Export" or "API Access," effectively locking shelters into their ecosystem.
-    \item \textbf{Slow Performance:} Large, complex databases that are not optimized for modern high-concurrency needs.
+    \item \textbf{High Coupling:} This architectural debt makes it nearly impossible to implement rapid feature updates. A change in the intake logic might inadvertently break the adoption contract generation.
+    \item \textbf{Data Inaccessibility:} Many legacy providers lock shelters into their ecosystem by making API access expensive or non-existent.
+    \item \textbf{Monolithic Scaling:} If one part of the app (like image processing) is under heavy load, the entire system slows down.
 \end{itemize}
-
-\subsection{Marketing and Business Model}
-The business model for legacy software is often based on high upfront licensing costs and per-user seat pricing. This model is profitable for the vendor but creates a financial barrier for organizations that rely on large numbers of part-time volunteers. Their marketing focuses on compliance and insurance requirements rather than the speed of adoption or the user experience of the adopter.
 
 \section{Aggregator Marketplaces}
 
-Platforms like Petfinder and Adopt-a-Pet are the most visible solutions in the market.
+Platforms like Petfinder and Adopt-a-Pet are the most visible solutions.
 
 \subsection{Architecture and Technology}
-These are modern, web-scale platforms optimized for search and discovery. They use sophisticated caching, search indexing (like Elasticsearch), and CDNs to serve millions of images and search queries. Their architecture is designed to handle massive amounts of read-only traffic. However, their "Backend-as-a-Service" (BaaS) for shelters is often an afterthought, lacking the deep workflow management needed for daily operations.
-
-\subsection{Marketing and Consumer Dominance}
-These platforms have a virtual monopoly on consumer search traffic for pets. Any new solution must either integrate with these marketplaces via APIs or provide a superior enough "Direct-to-Consumer" experience that shelters can build their own brand presence. Currently, marketplaces own the adopter relationship, leaving the shelter as a mere "fulfillment center."
+These are modern, web-scale platforms optimized for search. They use sophisticated indexing and CDNs. However, they are primarily marketing tools, not management tools. Shelters still need a separate system to handle internal administrative data. This creates a synchronization problem where a shelter must manually update marketplaces every time a dog's status changes.
 
 \section{Generic CRM and Internal Tools}
 
-Some organizations use general-purpose tools like Salesforce or Trello to manage adoptions.
+Some organizations use general-purpose tools like Salesforce or Trello.
 
 \subsection{Architecture and Technology}
-These tools offer massive flexibility through low-code or no-code platforms. Architecture is typically multi-tenant SaaS. While they are highly secure and reliable, they require a "custom developer" to map pet welfare requirements to generic "Sales Pipeline" fields. For example, a "Lead" becomes an "Adopter," and a "Deal" becomes an "Adoption." 
+These tools offer flexibility through multi-tenant SaaS architectures. However, they require a "custom developer" to map pet welfare requirements to generic fields. For example, a "Lead" becomes an "Adopter." This often results in a "clunky" user experience that doesn't feel native to the mission.
 
-\subsection{Marketing and Adoption}
-They are marketed as versatile productivity tools. While they can be adapted for adoption workflows, the customization process is expensive and often results in a "clunky" user experience that doesn't feel native to the animal rescue mission.
+\section{Technological Stagnation in the Sector}
+The primary issue across all existing categories is technological stagnation. While the broader tech industry has moved toward serverless, microservices, and container orchestration \cite{microservices_fowler}, the animal welfare sector remains stuck with platforms that are difficult to scale and integrate. The Dog Adoption Management System leverages AKS and Docker to ensure that the infrastructure is as modern and agile as the code it runs.
 
-\section{Niche SaaS Startups}
-
-Recently, a few "cloud-native" startups have emerged (e.g., Shelterluv).
-
-\subsection{Architecture and Technology}
-These are built on modern web stacks (React, Node.js/Python, AWS/GCP). They offer better UX and simple REST APIs. However, many still struggle with "Horizontal Scaling" or are built on monolithic cloud architectures that make them vulnerable to downtime when traffic spikes during national adoption events.
-
-\section{Gap Analysis: Why a New Solution is Needed}
-
-The analysis of existing solutions reveals several critical gaps:
-\begin{enumerate}
-    \item \textbf{Integration Deficit:} There is a lack of "Management-as-a-Service" platforms that offer both internal administrative control and a high-quality, modern adopter interface.
-    \item \textbf{Technological Stagnation:} Legacy tools are not utilizing the full potential of cloud-native architectures (microservices, event-driven scaling, and automated DevOps).
-    \item \textbf{Cost Inaccessibility:} High licensing fees prevent smaller shelters from digitizing their operations.
-    \item \textbf{UX Friction:} Most tools prioritize the database structure over the human experience (both for shelter staff and for adopters).
-\end{enumerate}
-
-The Dog Adoption Management System addressed in this report is designed to fill these gaps by offering a microservices-based, scalable architecture that is both powerful enough for large shelters and intuitive enough for small rescues, with a focus on real-time integration and user-centric design.
+\section{Comparative Market Matrix}
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|l|c|c|c|c|}
+    \hline
+    \textbf{Feature} & \textbf{Legacy SW} & \textbf{Marketplaces} & \textbf{Generic CRM} & \textbf{Our Project} \\
+    \hline
+    API-First & No & Partial & Yes & \textbf{Yes} \\
+    Clean Arch & No & No & N/A & \textbf{Yes} \\
+    Scalability & Low & High & High & \textbf{High} \\
+    Specialized Logic & High & Low & Low & \textbf{High} \\
+    \hline
+    \end{tabular}
+    \caption{Comparison of adoption management solutions}
+\end{table}
