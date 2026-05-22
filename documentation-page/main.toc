@@ -32,6 +32,6 @@
 \contentsline {section}{\numberline {4.7}Future Technology Stack: AI and Mobile}{11}{section.4.7}%
 \contentsline {section}{\numberline {4.8}Monitoring and Observability}{11}{section.4.8}%
 \contentsline {chapter}{\numberline {5}Business Canvas}{12}{chapter.5}%
-\contentsline {chapter}{\numberline {6}Architecture Diagram}{13}{chapter.6}%
-\contentsline {chapter}{\numberline {7}Use Case Diagram}{14}{chapter.7}%
-\contentsline {chapter}{\numberline {8}Functionality, Flow, and API Documentation}{15}{chapter.8}%
+\contentsline {chapter}{\numberline {6}Architecture Diagram}{14}{chapter.6}%
+\contentsline {chapter}{\numberline {7}Use Case Diagram}{16}{chapter.7}%
+\contentsline {chapter}{\numberline {8}Functionality, Flow, and API Documentation}{17}{chapter.8}%
