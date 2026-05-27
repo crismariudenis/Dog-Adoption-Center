@@ -1,8 +1,8 @@
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 USER root
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends tesseract-ocr \
-	&& rm -rf /var/lib/apt/lists/*
+    && apt-get install -y --no-install-recommends tesseract-ocr \
+    && rm -rf /var/lib/apt/lists/*
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
