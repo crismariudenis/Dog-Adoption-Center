@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../api/api";
 import { useAuth } from "../contexts/AuthContext";
+import DogDetectPage from "./DogDetectPage";
 
 const MOCK_DOGS = [
   {
@@ -443,6 +445,7 @@ export default function HomePage() {
   const dogsRef = useRef(null);
   const [selectedDog, setSelectedDog] = useState(null);
   const [dogImages, setDogImages] = useState({});
+  const navigate = useNavigate();
 
   const scrollToDogs = () =>
     dogsRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -482,12 +485,27 @@ export default function HomePage() {
           Every dog deserves a loving home. Browse our available dogs and start
           your adoption journey today.
         </p>
-        <button
-          onClick={scrollToDogs}
-          className="mt-6 bg-white text-amber-700 font-semibold px-6 py-2 rounded-full hover:bg-amber-100 transition"
-        >
-          Start Adopting
-        </button>
+        <div className="mt-6 flex items-center justify-center gap-4">
+          <button
+            onClick={scrollToDogs}
+            className="bg-white text-amber-700 font-semibold px-6 py-2 rounded-full hover:bg-amber-100 transition"
+          >
+            Start Adopting
+          </button>
+          <button
+            onClick={() => navigate("/dog-detect")}
+            className="bg-amber-900 text-white font-semibold px-6 py-2 rounded-full hover:bg-amber-800 transition"
+          >
+            Scan a Dog
+          </button>
+        </div>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-6 py-8">
+        <h2 className="text-2xl font-bold text-amber-800 mb-4">Dog Scanner</h2>
+        <div className="bg-white rounded-2xl shadow p-4">
+          <DogDetectPage />
+        </div>
       </div>
 
       <div ref={dogsRef} className="max-w-5xl mx-auto px-6 py-12">
