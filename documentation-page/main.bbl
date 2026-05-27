@@ -3,10 +3,8 @@
 \bibitem{aspca_stats}
 {ASPCA}.
 \newblock Pet statistics: Shelter intake and surrender.
-\newblock Technical report, American Society for the Prevention of Cruelty to
-  Animals, 2023.
-\newblock
-  \url{https://www.aspca.org/helping-people-pets/shelter-intake-and-surrender/pet-statistics}.
+\newblock Technical report, American Society for the Prevention of Cruelty to Animals, 2023.
+\newblock \url{https://www.aspca.org/helping-people-pets/shelter-intake-and-surrender/pet-statistics}.
 
 \bibitem{microservices_fowler}
 Martin Fowler and James Lewis.
@@ -17,25 +15,21 @@ Martin Fowler and James Lewis.
 \bibitem{shelter_stress_2022}
 L.~M. Gunter and E.~N. Feuerbacher.
 \newblock Dog welfare in the shelter environment: A review.
-\newblock {\em Journal of Applied Animal Welfare Science}, 25(2):145--160,
-  2022.
+\newblock {\em Journal of Applied Animal Welfare Science}, 25(2):145--160, 2022.
 
 \bibitem{clean_architecture}
 Robert~C. Martin.
-\newblock {\em Clean Architecture: A Craftsman's Guide to Software Structure
-  and Design}.
+\newblock {\em Clean Architecture: A Craftsman's Guide to Software Structure and Design}.
 \newblock Prentice Hall, 2017.
 
 \bibitem{microsoft_net10}
 {Microsoft}.
 \newblock What's new in .net 10, 2025.
-\newblock
-  \url{https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-10}.
+\newblock \url{https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-10}.
 
 \bibitem{cosmosdb_whitepaper}
 {Microsoft Azure}.
-\newblock Azure cosmos db: A multi-model database service for globally
-  distributed applications, 2023.
+\newblock Azure cosmos db: A multi-model database service for globally distributed applications, 2023.
 
 \bibitem{who_rabies}
 {World Health Organization}.

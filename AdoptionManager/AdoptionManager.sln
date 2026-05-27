@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoptionManager.Domain", "A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoptionManager.Infrastructure", "AdoptionManager.Infrastructure\AdoptionManager.Infrastructure.csproj", "{02CD979D-AB8F-4125-A9F0-E04B8AA594BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoptionManager.Tests", "AdoptionManager.Tests\AdoptionManager.Tests.csproj", "{C2F4B0B1-0A7A-4B6F-9F0C-2F2D1B7B1A11}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{02CD979D-AB8F-4125-A9F0-E04B8AA594BB}.Release|x64.Build.0 = Release|Any CPU
 		{02CD979D-AB8F-4125-A9F0-E04B8AA594BB}.Release|x86.ActiveCfg = Release|Any CPU
 		{02CD979D-AB8F-4125-A9F0-E04B8AA594BB}.Release|x86.Build.0 = Release|Any CPU
+		{C2F4B0B1-0A7A-4B6F-9F0C-2F2D1B7B1A11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2F4B0B1-0A7A-4B6F-9F0C-2F2D1B7B1A11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2F4B0B1-0A7A-4B6F-9F0C-2F2D1B7B1A11}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C2F4B0B1-0A7A-4B6F-9F0C-2F2D1B7B1A11}.Debug|x64.Build.0 = Debug|Any CPU
+		{C2F4B0B1-0A7A-4B6F-9F0C-2F2D1B7B1A11}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C2F4B0B1-0A7A-4B6F-9F0C-2F2D1B7B1A11}.Debug|x86.Build.0 = Debug|Any CPU
+		{C2F4B0B1-0A7A-4B6F-9F0C-2F2D1B7B1A11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2F4B0B1-0A7A-4B6F-9F0C-2F2D1B7B1A11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2F4B0B1-0A7A-4B6F-9F0C-2F2D1B7B1A11}.Release|x64.ActiveCfg = Release|Any CPU
+		{C2F4B0B1-0A7A-4B6F-9F0C-2F2D1B7B1A11}.Release|x64.Build.0 = Release|Any CPU
+		{C2F4B0B1-0A7A-4B6F-9F0C-2F2D1B7B1A11}.Release|x86.ActiveCfg = Release|Any CPU
+		{C2F4B0B1-0A7A-4B6F-9F0C-2F2D1B7B1A11}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

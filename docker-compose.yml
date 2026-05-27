@@ -113,6 +113,7 @@ services:
       context: ./AdoptionManager
       dockerfile: AdoptionManager.Api/Dockerfile
     environment:
+      - ADOPTION_MANAGER_LOCAL=true
       - COSMOS_URI=${COSMOS_URI}
       - COSMOS_KEY=${COSMOS_KEY}
       - SERVICE_BUS_CONNECTION_STRING=${SERVICE_BUS_CONNECTION_STRING}

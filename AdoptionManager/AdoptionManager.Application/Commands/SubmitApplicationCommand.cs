@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using AdoptionManager.Application.DTOs;
 using MediatR;
 
@@ -9,4 +10,21 @@ public record SubmitApplicationCommand(
     Guid UserId,
     string ApplicantName,
     string ApplicantEmail,
-    string Justification) : IRequest<ApplicationDto>;
+    string Justification) : IRequest<ApplicationDto>
+{
+    public bool RequiresLandlordConsent { get; init; }
+
+    public IReadOnlyCollection<AdoptionDocumentRequest> Documents { get; init; } = Array.Empty<AdoptionDocumentRequest>();
+
+    public AdoptionVerificationRequest ToVerificationRequest()
+    {
+        return new AdoptionVerificationRequest(
+            PetId,
+            UserId,
+            ApplicantName,
+            ApplicantEmail,
+            Justification,
+            RequiresLandlordConsent,
+            Documents);
+    }
+}

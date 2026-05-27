@@ -27,7 +27,8 @@ The platform's functionality is exposed through a set of RESTful APIs, enabling 
     
     \item \textbf{AdoptionManager}
     \begin{itemize}
-        \item \texttt{POST /api/adoptions}: Submits a new adoption application.
+        \item \texttt{POST /api/adoptions/validate}: Validates identity and supporting documents without storing them.
+        \item \texttt{POST /api/adoptions}: Submits a new adoption application after validation.
         \item \texttt{GET /api/adoptions/user/\{userId\}}: Retrieves all applications for a specific user.
         \item \texttt{PUT /api/adoptions/\{id\}/status}: (Admin only) Updates the status of an application (e.g., Approved, Rejected).
     \end{itemize}

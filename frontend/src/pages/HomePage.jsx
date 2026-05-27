@@ -19,31 +19,145 @@ const statusStyle = {
 
 function AdoptModal({ dog, onClose }) {
   const { user, token } = useAuth()
-  const [form, setForm] = useState({ message: '' })
+  const [form, setForm] = useState({
+    message: '',
+    requiresLandlordConsent: false,
+    documents: [
+      { documentType: 'GovernmentId', file: null },
+      { documentType: 'ProofOfResidence', file: null },
+    ],
+  })
   const [submitting, setSubmitting] = useState(false)
   const [success, setSuccess] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
+  const [validation, setValidation] = useState(null)
+  const [extraction, setExtraction] = useState(null)
+
+  const toDocumentPayload = (document) => {
+    if (!document.file) {
+      return null
+    }
+
+    return {
+      documentType: document.documentType,
+      fileName: document.file.name,
+      contentType: document.file.type || 'application/octet-stream',
+      sizeBytes: document.file.size,
+    }
+  }
+
+  const updateDocument = (index, field, value) => {
+    setForm(current => {
+      const documents = [...current.documents]
+      documents[index] = { ...documents[index], [field]: value }
+      return { ...current, documents }
+    })
+  }
+
+  const addLandlordConsent = () => {
+    setForm(current => {
+      if (current.documents.some(document => document.documentType === 'LandlordConsent')) {
+        return current
+      }
+
+      return {
+        ...current,
+        requiresLandlordConsent: true,
+        documents: [
+          ...current.documents,
+          { documentType: 'LandlordConsent', file: null },
+        ],
+      }
+    })
+  }
+
+  const validateApplication = async () => {
+    setErrorMsg('')
+    setValidation(null)
+    setExtraction(null)
+
+    try {
+      const userId = getUserId(token)
+      const result = await api.validateApplication({
+        petId: `00000000-0000-0000-0000-00000000000${dog.id}`,
+        userId,
+        applicantName: user?.username ?? user?.email ?? 'Anonymous',
+        applicantEmail: user?.email ?? 'anonymous@example.com',
+        justification: form.message,
+        requiresLandlordConsent: form.requiresLandlordConsent,
+        documents: form.documents.map(toDocumentPayload).filter(Boolean),
+      }, token)
+
+      setValidation(result)
+      if (!result.isValid) {
+        setErrorMsg(result.errors.join(' '))
+        return
+      }
+
+      const idDocument = form.documents.find(document => document.documentType === 'GovernmentId')?.file
+      const bankStatement = form.documents.find(document => document.documentType === 'ProofOfResidence')?.file
+
+      if (!idDocument || !bankStatement) {
+        setErrorMsg('Upload both GovernmentId and ProofOfResidence files to run extraction.')
+        return
+      }
+
+      const extractionResult = await api.scanDocuments(
+        idDocument,
+        bankStatement,
+        user?.username ?? user?.email ?? '',
+        token)
+
+      setExtraction(extractionResult)
+    } catch (err) {
+      setErrorMsg(err?.message || 'Validation failed. Check the document fields and try again.')
+      console.error(err)
+    }
+  }
+
+  const getUserId = (authToken) => {
+    let userId = '00000000-0000-0000-0000-000000000002'
+    if (authToken) {
+      try {
+        const payload = JSON.parse(atob(authToken.split('.')[1]))
+        if (payload.id) userId = payload.id
+      } catch (e) {}
+    }
+    return userId
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmitting(true)
     setErrorMsg('')
-    
-    let userId = '00000000-0000-0000-0000-000000000002'
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]))
-        if (payload.id) userId = payload.id
-      } catch (e) {}
-    }
+
+    const userId = getUserId(token)
 
     try {
+      const validationResult = validation ?? await api.validateApplication({
+        petId: `00000000-0000-0000-0000-00000000000${dog.id}`,
+        userId,
+        applicantName: user?.username ?? user?.email ?? 'Anonymous',
+        applicantEmail: user?.email ?? 'anonymous@example.com',
+        justification: form.message,
+        requiresLandlordConsent: form.requiresLandlordConsent,
+        documents: form.documents.map(toDocumentPayload).filter(Boolean),
+      }, token)
+
+      if (!validationResult.isValid) {
+        setValidation(validationResult)
+        setErrorMsg(validationResult.errors.join(' '))
+        return
+      }
+
       await api.submitApplication({
         petId: `00000000-0000-0000-0000-00000000000${dog.id}`,
         userId: userId,
         applicantName: user?.username ?? user?.email ?? 'Anonymous',
         applicantEmail: user?.email ?? 'anonymous@example.com',
-        justification: form.message
+        justification: form.message,
+        requiresLandlordConsent: form.requiresLandlordConsent,
+        documents: form.documents.map(toDocumentPayload).filter(Boolean),
       }, token)
 
       api.trackEvent({
@@ -65,8 +179,8 @@ function AdoptModal({ dog, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
+    <div className="fixed inset-0 bg-black/40 flex items-start sm:items-center justify-center z-50 px-4 py-6 overflow-y-auto">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto">
         {success ? (
           <div className="text-center py-6">
             <div className="text-5xl mb-4">🐾</div>
@@ -92,6 +206,36 @@ function AdoptModal({ dog, onClose }) {
                 Applying as <span className="font-medium text-gray-700">{user?.username ?? user?.email}</span>
               </p>
               {errorMsg && <p className="text-red-500 text-sm font-semibold">{errorMsg}</p>}
+              {validation && (
+                <div className={`rounded-lg p-3 text-sm ${validation.isValid ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
+                  <p className="font-semibold mb-1">{validation.isValid ? 'Validation passed locally.' : 'Validation failed locally.'}</p>
+                  {!validation.isValid && (
+                    <ul className="list-disc pl-5 space-y-1">
+                      {validation.errors.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+              {extraction && (
+                <div className="rounded-lg p-3 text-sm bg-blue-50 text-blue-900 space-y-2">
+                  <p className="font-semibold">Extracted document data</p>
+                  <p><strong>ID Name:</strong> {extraction.extractedIdName || 'Not found'}</p>
+                  {extraction.idImagePreviewBase64 && (
+                    <img src={extraction.idImagePreviewBase64} alt="Extracted ID preview" className="w-40 h-auto rounded border border-blue-200" />
+                  )}
+                  <p><strong>Bank Balance:</strong> {extraction.extractedBankBalance != null ? `${extraction.extractedBankBalance} ${extraction.extractedBankCurrency || ''}` : 'Not found'}</p>
+                  <p><strong>Bank Country:</strong> {extraction.extractedBankCountry || 'Not found'}</p>
+                  {Array.isArray(extraction.warnings) && extraction.warnings.length > 0 && (
+                    <ul className="list-disc pl-5">
+                      {extraction.warnings.map((warning) => (
+                        <li key={warning}>{warning}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
               <div>
                 <label className="block text-xs text-gray-500 mb-1">Why do you want to adopt {dog.name}?</label>
                 <textarea
@@ -103,6 +247,52 @@ function AdoptModal({ dog, onClose }) {
                   placeholder="Tell us a bit about yourself..."
                 />
               </div>
+              <div className="rounded-xl border border-amber-100 bg-amber-50/60 p-3 space-y-3">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-semibold text-amber-900">Document checklist</p>
+                    <p className="text-xs text-amber-700">This is only validated locally and is not stored.</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={addLandlordConsent}
+                    className="text-xs font-semibold px-3 py-1.5 rounded-full bg-white border border-amber-200 text-amber-800 hover:bg-amber-100"
+                  >
+                    Add landlord consent
+                  </button>
+                </div>
+
+                <label className="flex items-center gap-2 text-sm text-gray-700">
+                  <input
+                    type="checkbox"
+                    checked={form.requiresLandlordConsent}
+                    onChange={(e) => setForm(current => ({ ...current, requiresLandlordConsent: e.target.checked }))}
+                  />
+                  Requires landlord consent
+                </label>
+
+                {form.documents.map((document, index) => (
+                  <div key={`${document.documentType}-${index}`} className="grid grid-cols-1 gap-2 rounded-lg bg-white p-3 border border-amber-100">
+                    <div className="text-xs font-semibold text-amber-800">{document.documentType}</div>
+                    <input
+                      type="file"
+                      accept=".pdf,.png,.jpg,.jpeg"
+                      className="w-full border border-amber-200 rounded-lg px-3 py-2 text-sm bg-white"
+                      onChange={(e) => updateDocument(index, 'file', e.target.files?.[0] ?? null)}
+                    />
+                    <p className="text-xs text-gray-500">
+                      {document.file ? `Selected: ${document.file.name} (${document.file.type || 'unknown type'})` : 'No file selected'}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={validateApplication}
+                className="w-full bg-white border border-amber-200 text-amber-800 font-semibold py-2 rounded-lg hover:bg-amber-50 transition"
+              >
+                Validate Documents
+              </button>
               <button
                 type="submit"
                 disabled={submitting}
