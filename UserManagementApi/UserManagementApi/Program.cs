@@ -1,7 +1,9 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using UserManagementApi.Models;
-using UserManagementApi.Persistance;
-using UserManagementApi.Services;
+using UserManagementApi.Application.DTOs;
+using UserManagementApi.Application.Services;
+using UserManagementApi.Application.Validators;
+using UserManagementApi.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,9 +12,10 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IValidator<CreateUserRequest>, CreateUserRequestValidator>();
+builder.Services.AddScoped<IValidator<UpdateUserRequest>, UpdateUserRequestValidator>();
 
 builder.Services.AddEndpointsApiExplorer();
-
 
 var app = builder.Build();
 
@@ -23,7 +26,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-
 // Create the database if it doesn't exist
 using (var scope = app.Services.CreateScope())
 {
@@ -33,8 +35,14 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Add endpoints
-app.MapPost("/users", async (IUserService userService, CreateUserRequest request) =>
+app.MapPost("/users", async (IUserService userService, IValidator<CreateUserRequest> validator, CreateUserRequest request) =>
 {
+    var validationResult = await validator.ValidateAsync(request);
+    if (!validationResult.IsValid)
+    {
+        return Results.ValidationProblem(validationResult.ToDictionary());
+    }
+
     var newUser = await userService.AddUserAsync(request.Username, request.Email, request.Password);
     return Results.Ok(newUser);
 });
@@ -65,8 +73,14 @@ app.MapGet("/users/{id}", async (IUserService userService, Guid id) =>
     return Results.Ok(user);
 });
 
-app.MapPut("/users/{id}", async (IUserService userService, Guid id, UpdateUserRequest request) =>
+app.MapPut("/users/{id}", async (IUserService userService, IValidator<UpdateUserRequest> validator, Guid id, UpdateUserRequest request) =>
 {
+    var validationResult = await validator.ValidateAsync(request);
+    if (!validationResult.IsValid)
+    {
+        return Results.ValidationProblem(validationResult.ToDictionary());
+    }
+
     var updatedUser = await userService.UpdateUserAsync(id, request.Username, request.Email);
     if (updatedUser == null)
     {
